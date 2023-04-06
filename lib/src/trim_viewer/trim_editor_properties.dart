@@ -32,6 +32,11 @@ class TrimEditorProperties {
   /// By default it is set to `Colors.white`.
   final Color circlePaintColor;
 
+  /// For specifying a color to the inner circle.
+  ///
+  /// By default it is set to `Colors.white`.
+  final Color innerCirclePaintColor;
+
   /// For specifying a color to the border of
   /// the trim area.
   ///
@@ -103,6 +108,7 @@ class TrimEditorProperties {
     this.scrubberWidth = 1.0,
     this.borderRadius = 4.0,
     this.circlePaintColor = Colors.white,
+    this.innerCirclePaintColor = Colors.black,
     this.borderPaintColor = Colors.white,
     this.scrubberPaintColor = Colors.white,
     this.sideTapSize = 24,

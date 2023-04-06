@@ -98,15 +98,19 @@ class _TrimmerViewState extends State<TrimmerView> {
                       viewerWidth: MediaQuery.of(context).size.width,
                       durationStyle: DurationStyle.FORMAT_MM_SS,
                       maxVideoLength: const Duration(seconds: 10),
-                      editorProperties: TrimEditorProperties(
-                        borderPaintColor: Colors.yellow,
-                        borderWidth: 4,
-                        borderRadius: 5,
-                        circlePaintColor: Colors.yellow.shade800,
+                      editorProperties: const TrimEditorProperties(
+                        borderPaintColor: Colors.red,
+                        borderWidth: 5,
+                        borderRadius: 15,
+                        circlePaintColor: Colors.green,
+                        innerCirclePaintColor: Colors.black,
+                        circleSize: 25,
+                                                innerCircleSize: 12,
+
+                        
                       ),
                       areaProperties: TrimAreaProperties.edgeBlur(
-                        thumbnailQuality: 10,
-                      ),
+                          thumbnailQuality: 10, borderRadius: 15),
                       onChangeStart: (value) => _startValue = value,
                       onChangeEnd: (value) => _endValue = value,
                       onChangePlaybackState: (value) =>

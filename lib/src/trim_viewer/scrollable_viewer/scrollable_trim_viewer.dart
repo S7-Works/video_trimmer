@@ -6,8 +6,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_trimmer/src/trim_viewer/trim_editor_painter.dart';
 import 'package:video_trimmer/src/trim_viewer/trim_area_properties.dart';
+import 'package:video_trimmer/src/trim_viewer/trim_editor_painter.dart';
 import 'package:video_trimmer/src/trim_viewer/trim_editor_properties.dart';
 import 'package:video_trimmer/src/trimmer.dart';
 import 'package:video_trimmer/src/utils/duration_style.dart';
@@ -282,6 +282,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   @override
   void initState() {
     super.initState();
+    debugPrint(
+        "widget.editorProperties.circleSize ,${widget.editorProperties.circleSize}");
     _scrollController = ScrollController();
     _startCircleSize = widget.editorProperties.circleSize;
     _endCircleSize = widget.editorProperties.circleSize;
@@ -473,7 +475,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     _localPosition = details.localPosition.dx;
 
     if (_dragType == EditorDragType.left) {
-      _startCircleSize = widget.editorProperties.circleSizeOnDrag;
+      // _startCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_startPos.dx + details.delta.dx <= _endPos.dx) &&
           !(_endPos.dx - _startPos.dx - details.delta.dx > maxLengthPixels!)) {
@@ -481,8 +483,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
-      _startCircleSize = widget.editorProperties.circleSizeOnDrag;
-      _endCircleSize = widget.editorProperties.circleSizeOnDrag;
+      // _startCircleSize = widget.editorProperties.circleSizeOnDrag;
+      // _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_endPos.dx + details.delta.dx <= _thumbnailViewerW)) {
         _startPos += details.delta;
@@ -491,7 +493,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
         _onEndDragged();
       }
     } else {
-      _endCircleSize = widget.editorProperties.circleSizeOnDrag;
+      // _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_endPos.dx + details.delta.dx <= _thumbnailViewerW) &&
           (_endPos.dx + details.delta.dx >= _startPos.dx) &&
           !(_endPos.dx - _startPos.dx + details.delta.dx > maxLengthPixels!)) {
@@ -597,6 +599,9 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                               .format(widget.durationStyle),
                           style: widget.durationTextStyle,
                         ),
+
+                        //Add this CustomPaint widget to the Widget Tree
+
                         videoPlayerController.value.isPlaying
                             ? Text(
                                 Duration(milliseconds: _currentPosition.toInt())
@@ -622,12 +627,46 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                   startPos: _startPos,
                   endPos: _endPos,
                   scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
-                  startCircleSize: _startCircleSize,
-                  endCircleSize: _endCircleSize,
+                  startCircleSize:
+                      Duration(milliseconds: _videoStartPos.toInt())
+                                  .inSeconds ==
+                              0
+                          ? 0
+                          : _startCircleSize,
+                  endCircleSize:
+                      Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
+                              Duration(milliseconds: _trimmerAreaDuration)
+                                  .inSeconds
+                                  .toInt()
+                          ? 0
+                          : Duration(milliseconds: _videoStartPos.toInt())
+                                      .inSeconds ==
+                                  0
+                              ? 15
+                              : _endCircleSize,
+                  innerStartCircleSize:
+                      Duration(milliseconds: _videoStartPos.toInt())
+                                  .inSeconds ==
+                              0
+                          ? 0
+                          : _innerStartCircleSize,
+                  innerEndCircleSize:
+                      Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
+                              Duration(milliseconds: _trimmerAreaDuration)
+                                  .inSeconds
+                                  .toInt()
+                          ? 0
+                          : Duration(milliseconds: _videoStartPos.toInt())
+                                      .inSeconds ==
+                                  0
+                              ? 15
+                              : _innerEndCircleSize,
                   borderRadius: _borderRadius,
                   borderWidth: widget.editorProperties.borderWidth,
                   scrubberWidth: widget.editorProperties.scrubberWidth,
                   circlePaintColor: widget.editorProperties.circlePaintColor,
+                  innerCirclePaintColor:
+                      widget.editorProperties.innerCirclePaintColor,
                   borderPaintColor: widget.editorProperties.borderPaintColor,
                   scrubberPaintColor:
                       widget.editorProperties.scrubberPaintColor,
@@ -638,8 +677,17 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                       borderRadius: BorderRadius.circular(
                           widget.areaProperties.borderRadius),
                       child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: widget.editorProperties.borderPaintColor
+                                .withOpacity(
+                              .7,
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(
+                              widget.areaProperties.borderRadius),
+                        ),
                         key: _trimmerAreaKey,
-                        color: Colors.grey[900],
                         height: _thumbnailViewerH,
                         width: _thumbnailViewerW == 0.0
                             ? widget.viewerWidth
@@ -674,12 +722,13 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                             child: Row(
                               children: [
                                 AnimatedOpacity(
-                                    opacity:
-                                        _scrollController.position.pixels != 0.0
-                                            ? 1.0
-                                            : 0.0,
-                                    duration: const Duration(milliseconds: 300),
-                                    child: widget.areaProperties.startIcon),
+                                  opacity:
+                                      _scrollController.position.pixels != 0.0
+                                          ? 1.0
+                                          : 0.0,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: widget.areaProperties.startIcon,
+                                ),
                                 const Spacer(),
                                 AnimatedOpacity(
                                   opacity: _scrollController.position.pixels !=
