@@ -179,13 +179,15 @@ class TrimEditorPainter extends CustomPainter {
     // Paint start holder
     canvas.drawCircle(
         startPos + Offset(0, endPos.dy / 2), startCircleSize, circlePaint);
-    canvas.drawCircle(startPos + Offset(0, endPos.dy / 2), 12, innerCircle);
+    canvas.drawCircle(
+        startPos + Offset(0, endPos.dy / 2), innerStartCircleSize, innerCircle);
 
     // Paint end holder
     canvas.drawCircle(
         endPos + Offset(0, -endPos.dy / 2), endCircleSize, circlePaint);
 
-    canvas.drawCircle(endPos + Offset(0, -endPos.dy / 2), 12, innerCircle);
+    canvas.drawCircle(
+        endPos + Offset(0, -endPos.dy / 2), innerEndCircleSize, innerCircle);
   }
 
   @override

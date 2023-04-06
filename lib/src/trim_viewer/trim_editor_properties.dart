@@ -7,6 +7,12 @@ class TrimEditorProperties {
   /// By default it is set to `5.0`.
   final double circleSize;
 
+  /// For specifying a size to the holder at the
+  /// two ends of the video trimmer area, while it is `idle`.
+  ///
+  /// By default it is set to `3.0`.
+  final double innerCircleSize;
+
   /// For specifying a size to the holder at
   /// the two ends of the video trimmer area, while it is being
   /// `dragged`.
@@ -103,6 +109,7 @@ class TrimEditorProperties {
   ///
   const TrimEditorProperties({
     this.circleSize = 5.0,
+    this.innerCircleSize = 3.0,
     this.circleSizeOnDrag = 8.0,
     this.borderWidth = 3.0,
     this.scrubberWidth = 1.0,
