@@ -67,51 +67,54 @@ class ScrollableThumbnailViewer extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: scrollController,
-        child: SizedBox(
-          width: numberOfThumbnails * thumbnailHeight,
-          height: thumbnailHeight,
-          child: StreamBuilder<List<Uint8List?>>(
-            stream: generateThumbnail(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Uint8List?> imageBytes = snapshot.data!;
-                return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: List.generate(
-                    numberOfThumbnails,
-                    (index) => SizedBox(
-                      height: thumbnailHeight,
-                      width: thumbnailHeight,
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Opacity(
-                            opacity: 0.2,
-                            child: Image.memory(
-                              imageBytes[0] ?? kTransparentImage,
-                              fit: fit,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: SizedBox(
+            width: numberOfThumbnails * thumbnailHeight,
+            height: thumbnailHeight,
+            child: StreamBuilder<List<Uint8List?>>(
+              stream: generateThumbnail(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Uint8List?> imageBytes = snapshot.data!;
+                  return Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: List.generate(
+                      numberOfThumbnails,
+                      (index) => SizedBox(
+                        height: thumbnailHeight,
+                        width: thumbnailHeight,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Opacity(
+                              opacity: 0.2,
+                              child: Image.memory(
+                                imageBytes[0] ?? kTransparentImage,
+                                fit: fit,
+                              ),
                             ),
-                          ),
-                          index < imageBytes.length
-                              ? FadeInImage(
-                                  placeholder: MemoryImage(kTransparentImage),
-                                  image: MemoryImage(imageBytes[index]!),
-                                  fit: fit,
-                                )
-                              : const SizedBox(),
-                        ],
+                            index < imageBytes.length
+                                ? FadeInImage(
+                                    placeholder: MemoryImage(kTransparentImage),
+                                    image: MemoryImage(imageBytes[index]!),
+                                    fit: fit,
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              } else {
-                return Container(
-                  color: Colors.grey[900],
-                  height: thumbnailHeight,
-                  width: double.maxFinite,
-                );
-              }
-            },
+                  );
+                } else {
+                  return Container(
+                    color: Colors.grey[900],
+                    height: thumbnailHeight,
+                    width: double.maxFinite,
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),

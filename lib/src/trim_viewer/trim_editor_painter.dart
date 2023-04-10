@@ -20,10 +20,20 @@ class TrimEditorPainter extends CustomPainter {
   /// By default it is set to `0.5`.
   final double startCircleSize;
 
+  /// For specifying a size to the start holder
+  /// of the video trimmer area.
+  /// By default it is set to `0.5`.
+  final double innerStartCircleSize;
+
   /// For specifying a size to the end holder
   /// of the video trimmer area.
   /// By default it is set to `0.5`.
   final double endCircleSize;
+
+  /// For specifying a size to the end holder
+  /// of the video trimmer area.
+  /// By default it is set to `0.5`.
+  final double innerEndCircleSize;
 
   /// For specifying the width of the border around
   /// the trim area. By default it is set to `3`.
@@ -33,7 +43,7 @@ class TrimEditorPainter extends CustomPainter {
   final double scrubberWidth;
 
   /// For specifying whether to show the scrubber
-  final bool showScrubber;
+  final bool showScrubbers;
 
   /// For specifying a color to the border of
   /// the trim area. By default it is set to `Colors.white`.
@@ -42,6 +52,10 @@ class TrimEditorPainter extends CustomPainter {
   /// For specifying a color to the circle.
   /// By default it is set to `Colors.white`
   final Color circlePaintColor;
+
+  /// For specifying a color to the inner circle.
+  /// By default it is set to `Colors.black`
+  final Color innerCirclePaintColor;
 
   /// For specifying a color to the video
   /// scrubber inside the trim area. By default it is set to
@@ -107,13 +121,16 @@ class TrimEditorPainter extends CustomPainter {
     required this.endPos,
     required this.scrubberAnimationDx,
     this.startCircleSize = 0.5,
+    this.innerStartCircleSize = 0.3,
     this.endCircleSize = 0.5,
+    this.innerEndCircleSize = 0.3,
     this.borderRadius = 4,
     this.borderWidth = 3,
     this.scrubberWidth = 1,
-    this.showScrubber = true,
+    this.showScrubbers = true,
     this.borderPaintColor = Colors.white,
     this.circlePaintColor = Colors.white,
+    this.innerCirclePaintColor = Colors.black,
     this.scrubberPaintColor = Colors.white,
   });
 
@@ -143,7 +160,7 @@ class TrimEditorPainter extends CustomPainter {
       Radius.circular(borderRadius),
     );
 
-    if (showScrubber) {
+    if (showScrubbers) {
       if (scrubberAnimationDx.toInt() > startPos.dx.toInt()) {
         canvas.drawLine(
           Offset(scrubberAnimationDx, 0),
@@ -152,14 +169,25 @@ class TrimEditorPainter extends CustomPainter {
         );
       }
     }
+    Paint innerCircle = Paint()
+      ..color = innerCirclePaintColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..style = PaintingStyle.fill;
 
     canvas.drawRRect(roundedRect, borderPaint);
     // Paint start holder
     canvas.drawCircle(
         startPos + Offset(0, endPos.dy / 2), startCircleSize, circlePaint);
+    canvas.drawCircle(
+        startPos + Offset(0, endPos.dy / 2), innerStartCircleSize, innerCircle);
+
     // Paint end holder
     canvas.drawCircle(
         endPos + Offset(0, -endPos.dy / 2), endCircleSize, circlePaint);
+
+    canvas.drawCircle(
+        endPos + Offset(0, -endPos.dy / 2), innerEndCircleSize, innerCircle);
   }
 
   @override

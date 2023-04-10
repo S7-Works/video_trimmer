@@ -7,6 +7,12 @@ class TrimEditorProperties {
   /// By default it is set to `5.0`.
   final double circleSize;
 
+  /// For specifying a size to the holder at the
+  /// two ends of the video trimmer area, while it is `idle`.
+  ///
+  /// By default it is set to `3.0`.
+  final double innerCircleSize;
+
   /// For specifying a size to the holder at
   /// the two ends of the video trimmer area, while it is being
   /// `dragged`.
@@ -31,6 +37,11 @@ class TrimEditorProperties {
   ///
   /// By default it is set to `Colors.white`.
   final Color circlePaintColor;
+
+  /// For specifying a color to the inner circle.
+  ///
+  /// By default it is set to `Colors.white`.
+  final Color innerCirclePaintColor;
 
   /// For specifying a color to the border of
   /// the trim area.
@@ -98,11 +109,13 @@ class TrimEditorProperties {
   ///
   const TrimEditorProperties({
     this.circleSize = 5.0,
+    this.innerCircleSize = 3.0,
     this.circleSizeOnDrag = 8.0,
     this.borderWidth = 3.0,
     this.scrubberWidth = 1.0,
     this.borderRadius = 4.0,
     this.circlePaintColor = Colors.white,
+    this.innerCirclePaintColor = Colors.black,
     this.borderPaintColor = Colors.white,
     this.scrubberPaintColor = Colors.white,
     this.sideTapSize = 24,
