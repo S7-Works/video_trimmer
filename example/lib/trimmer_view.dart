@@ -99,13 +99,13 @@ class _TrimmerViewState extends State<TrimmerView> {
                       durationStyle: DurationStyle.FORMAT_MM_SS,
                       maxVideoLength: const Duration(seconds: 10),
                       editorProperties: const TrimEditorProperties(
-                        borderPaintColor: Colors.red,
+                        borderPaintColor: Colors.transparent,
                         borderWidth: 5,
                         borderRadius: 15,
-                        circlePaintColor: Colors.green,
-                        innerCirclePaintColor: Colors.black,
-                        circleSize: 25,
-                        innerCircleSize: 12,
+                        circlePaintColor: Colors.transparent,
+                        innerCirclePaintColor: Colors.transparent,
+                        circleSize: 0,
+                        innerCircleSize: 0,
                       ),
                       areaProperties: TrimAreaProperties.edgeBlur(
                           thumbnailQuality: 10, borderRadius: 15),
