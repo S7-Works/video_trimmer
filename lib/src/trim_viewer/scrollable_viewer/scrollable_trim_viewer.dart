@@ -151,7 +151,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   double _localPosition = 0.0;
 
   Offset _startPos = const Offset(30.0, 0);
-  Offset _endPos = const Offset(380, 0.0);
+  Offset _endPos = const Offset(0.0, 0.0);
+  Offset _endPosOffset = const Offset(0.0, 0.0);
 
   double _startFraction = 0.0;
   double _endFraction = 1.0;
@@ -201,7 +202,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   Timer? _scrollStartTimer;
   Timer? _scrollingTimer;
 
-  void startScrolling(bool isTowardsEnd) {
+  void startScrollings(bool isTowardsEnd) {
     _scrollingTimer =
         Timer.periodic(const Duration(milliseconds: 300), (timer) {
       setState(() {
@@ -260,16 +261,16 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     setState(() {});
   }
 
-  void startTimer(bool isTowardsEnd) {
+  void startTimers(bool isTowardsEnd) {
     var start = 300;
     _scrollStartTimer = Timer.periodic(
-      const Duration(milliseconds: 100),
+      const Duration(milliseconds: 50),
       (Timer timer) {
         if (start == 0) {
           timer.cancel();
           log('ANIMATE');
           if (_scrollingTimer?.isActive ?? false) return;
-          startScrolling(isTowardsEnd);
+          startScrollings(isTowardsEnd);
         } else {
           start -= 100;
         }
@@ -281,14 +282,25 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-
     _borderRadius = widget.editorProperties.borderRadius;
     _thumbnailViewerH = widget.viewerHeight;
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      // _getWidgetInfo();
+
       final renderBox =
           _trimmerAreaKey.currentContext?.findRenderObject() as RenderBox?;
       final trimmerActualWidth = renderBox?.size.width;
       log('RENDER BOX: ${renderBox?.size.width}');
+
+      final Size size = renderBox!.size; // or _widgetKey.currentContext?.size
+      // debugPrint('Sizess: ${size.width}, ${size.height}');
+      _endPosOffset = Offset(size.width - 30, size.height);
+
+      // final Offset offset = renderBox.localToGlobal(Offset.zero);
+      // debugPrint('Offsetss: ${offset.dx}, ${offset.dy}');
+      // debugPrint(
+      //     'Positionss: ${(offset.dx + size.width) / 2}, ${(offset.dy + size.height) / 2}');
+
       if (trimmerActualWidth == null) return;
       _thumbnailViewerW = trimmerActualWidth;
       _initializeVideoController();
@@ -350,6 +362,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
             milliseconds: (totalDuration.inMilliseconds * trimAreaLength) ~/
                 preciseTotalLength);
         _trimmerAreaDuration = preciseAreaDuration.inMilliseconds;
+
+        log("message : ${Duration(milliseconds: totalDuration.inMilliseconds).inSeconds.toString()}");
         log('preciseAreaDuration: $preciseAreaDuration');
         final trimmerFraction =
             maxVideoLength.inMilliseconds / preciseAreaDuration.inMilliseconds;
@@ -431,8 +445,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   void _onDragStart(DragStartDetails details) {
     log("onDragStart");
     log(details.localPosition.toString());
-    log("ssssss eeee, ${(_startPos.dx - details.localPosition.dx).abs().toString()}");
-    log("sssss ffggs, ${(_endPos.dx - details.localPosition.dx).abs().toString()}");
+    log((_startPos.dx - details.localPosition.dx).abs().toString());
+    log((_endPos.dx - details.localPosition.dx).abs().toString());
 
     final startDifference = _startPos.dx - details.localPosition.dx;
     final endDifference = _endPos.dx - details.localPosition.dx;
@@ -468,9 +482,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
     // log('Local pos: ${details.localPosition}');
     _localPosition = details.localPosition.dx;
-    log(details.localPosition.toString());
-    log("ssssss, ${(_startPos.dx - details.localPosition.dx).abs().toString()}");
-    log("ssssss ddddd, ${(_endPos.dx - details.localPosition.dx).abs().toString()}");
 
     if (_dragType == EditorDragType.left) {
       if ((_startPos.dx + details.delta.dx >= 0) &&
@@ -500,10 +511,10 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     _scrollStartTimer?.cancel();
     if (_endPos.dx >= _autoEndScrollPos &&
         currentScrollValue <= totalVideoLengthInPixels) {
-      startTimer(true);
+      startTimers(true);
     } else if (_startPos.dx <= _autoStartScrollPos &&
         currentScrollValue != 0.0) {
-      startTimer(false);
+      startTimers(false);
     }
 
     setState(() {});
@@ -539,11 +550,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
   /// Drag gesture ended, update UI accordingly.
   void _onDragEnd(DragEndDetails details) {
-    // log('onDragEnd');
-    // log(details.localPosition.toString());
-    // log((_startPos.dx - details.localPosition.dx).abs().toString());
-    // log((_endPos.dx - details.localPosition.dx).abs().toString());
-
     _scrollStartTimer?.cancel();
     _scrollingTimer?.cancel();
     setState(() {
@@ -598,7 +604,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
                         //Add this CustomPaint widget to the Widget Tree
 
-                        !videoPlayerController.value.isPlaying
+                        videoPlayerController.value.isPlaying
                             ? Text(
                                 Duration(milliseconds: _currentPosition.toInt())
                                     .format(widget.durationStyle),
@@ -623,9 +629,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                   startPos: _startPos <= const Offset(30.0, 0.0)
                       ? const Offset(30.0, 0.0)
                       : _startPos,
-                  endPos: _endPos >= const Offset(386.6, 50.0)
-                      ? const Offset(386.6, 50.0)
-                      : _endPos,
+                  endPos: _endPos >= _endPosOffset ? _endPosOffset : _endPos,
                   scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
                   startCircleTime:
                       Duration(milliseconds: _videoStartPos.toInt())
@@ -638,7 +642,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                                   .toString()),
                   endCircleTime:
                       Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
-                              Duration(milliseconds: _trimmerAreaDuration)
+                              Duration(milliseconds: _videoDuration)
                                   .inSeconds
                                   .toInt()
                           ? 0
