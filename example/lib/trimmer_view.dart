@@ -93,6 +93,7 @@ class _TrimmerViewState extends State<TrimmerView> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TrimViewer(
+                      type: ViewerType.scrollable,
                       trimmer: _trimmer,
                       viewerHeight: 50.0,
                       viewerWidth: MediaQuery.of(context).size.width,

@@ -150,8 +150,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
   double _localPosition = 0.0;
 
-  Offset _startPos = const Offset(0, 0);
-  Offset _endPos = const Offset(0, 0);
+  Offset _startPos = const Offset(30.0, 0);
+  Offset _endPos = const Offset(380, 0.0);
 
   double _startFraction = 0.0;
   double _endFraction = 1.0;
@@ -431,8 +431,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   void _onDragStart(DragStartDetails details) {
     log("onDragStart");
     log(details.localPosition.toString());
-    log((_startPos.dx - details.localPosition.dx).abs().toString());
-    log((_endPos.dx - details.localPosition.dx).abs().toString());
+    log("ssssss eeee, ${(_startPos.dx - details.localPosition.dx).abs().toString()}");
+    log("sssss ffggs, ${(_endPos.dx - details.localPosition.dx).abs().toString()}");
 
     final startDifference = _startPos.dx - details.localPosition.dx;
     final endDifference = _endPos.dx - details.localPosition.dx;
@@ -468,6 +468,9 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
     // log('Local pos: ${details.localPosition}');
     _localPosition = details.localPosition.dx;
+    log(details.localPosition.toString());
+    log("ssssss, ${(_startPos.dx - details.localPosition.dx).abs().toString()}");
+    log("ssssss ddddd, ${(_endPos.dx - details.localPosition.dx).abs().toString()}");
 
     if (_dragType == EditorDragType.left) {
       if ((_startPos.dx + details.delta.dx >= 0) &&
@@ -536,7 +539,11 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
   /// Drag gesture ended, update UI accordingly.
   void _onDragEnd(DragEndDetails details) {
-    log('onDragEnd');
+    // log('onDragEnd');
+    // log(details.localPosition.toString());
+    // log((_startPos.dx - details.localPosition.dx).abs().toString());
+    // log((_endPos.dx - details.localPosition.dx).abs().toString());
+
     _scrollStartTimer?.cancel();
     _scrollingTimer?.cancel();
     setState(() {
@@ -591,7 +598,7 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
                         //Add this CustomPaint widget to the Widget Tree
 
-                        videoPlayerController.value.isPlaying
+                        !videoPlayerController.value.isPlaying
                             ? Text(
                                 Duration(milliseconds: _currentPosition.toInt())
                                     .format(widget.durationStyle),
@@ -613,8 +620,12 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
             children: [
               CustomPaint(
                 foregroundPainter: TrimEditorPainter(
-                  startPos: _startPos,
-                  endPos: _endPos,
+                  startPos: _startPos <= const Offset(30.0, 0.0)
+                      ? const Offset(30.0, 0.0)
+                      : _startPos,
+                  endPos: _endPos >= const Offset(386.6, 50.0)
+                      ? const Offset(386.6, 50.0)
+                      : _endPos,
                   scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
                   startCircleTime:
                       Duration(milliseconds: _videoStartPos.toInt())

@@ -42,7 +42,6 @@ class TrimEditorPainter extends CustomPainter {
   /// the trim area. By default it is set to `Colors.white`.
   final Color borderPaintColor;
 
-
   /// For specifying a color to the video
   /// scrubber inside the trim area. By default it is set to
   /// `Colors.white`.
@@ -107,8 +106,8 @@ class TrimEditorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) async {
-    debugPrint("startCircleSize , $startCircleTime");
-   
+    debugPrint("startCircleSize , $size");
+
     var scrubberPaint = Paint()
       ..color = scrubberPaintColor
       ..strokeWidth = scrubberWidth
