@@ -481,8 +481,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
-      // _startCircleSize = widget.editorProperties.circleSizeOnDrag;
-      // _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_endPos.dx + details.delta.dx <= _thumbnailViewerW)) {
         _startPos += details.delta;
@@ -491,7 +489,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
         _onEndDragged();
       }
     } else {
-      // _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_endPos.dx + details.delta.dx <= _thumbnailViewerW) &&
           (_endPos.dx + details.delta.dx >= _startPos.dx) &&
           !(_endPos.dx - _startPos.dx + details.delta.dx > maxLengthPixels!)) {
@@ -600,9 +597,9 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
                         //Add this CustomPaint widget to the Widget Tree
 
-                        videoPlayerController.value.isPlaying
+                        !videoPlayerController.value.isPlaying
                             ? Text(
-                                Duration(milliseconds: _currentPosition.toInt())
+                                Duration(milliseconds: _videoEndPos.toInt())
                                     .format(widget.durationStyle),
                                 style: widget.durationTextStyle,
                               )

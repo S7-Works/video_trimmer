@@ -502,11 +502,11 @@ class TrimEditorPainter extends CustomPainter {
     c.close();
     // path_02.close();
 
-    Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
-    paint_2_fill.color = Colors.black.withOpacity(1.0);
+    Paint paint2Fill = Paint()..style = PaintingStyle.fill;
+    paint2Fill.color = Colors.black.withOpacity(1.0);
     // TODO hide this when time is highest
 
-    canvas.drawPath(c, paint_2_fill);
+    canvas.drawPath(c, paint2Fill);
 
     // End of Trimmer Right Button
   }
