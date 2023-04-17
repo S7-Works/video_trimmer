@@ -105,7 +105,6 @@ class _TrimmerViewState extends State<TrimmerView> {
                         circlePaintColor: Colors.transparent,
                         innerCirclePaintColor: Colors.transparent,
                         circleSize: 15,
-                        innerCircleSize: 0,
                       ),
                       areaProperties: TrimAreaProperties.edgeBlur(
                           thumbnailQuality: 10, borderRadius: 15),

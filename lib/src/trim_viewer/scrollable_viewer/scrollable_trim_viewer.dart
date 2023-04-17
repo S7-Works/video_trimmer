@@ -169,11 +169,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   double _autoStartScrollPos = 0.0;
   double _autoEndScrollPos = 0.0;
 
-  late double _startCircleSize;
   late double _endCircleSize;
 
-  late double _innerStartCircleSize;
-  late double _innerEndCircleSize;
   late double _borderRadius;
 
   double? fraction;
@@ -286,11 +283,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _startCircleSize = widget.editorProperties.circleSize;
     _endCircleSize = widget.editorProperties.circleSize;
 
-    _innerStartCircleSize = widget.editorProperties.innerCircleSize;
-    _innerEndCircleSize = widget.editorProperties.innerCircleSize;
     _borderRadius = widget.editorProperties.borderRadius;
     _thumbnailViewerH = widget.viewerHeight;
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -553,11 +547,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     _scrollStartTimer?.cancel();
     _scrollingTimer?.cancel();
     setState(() {
-      _startCircleSize = widget.editorProperties.circleSize;
       _endCircleSize = widget.editorProperties.circleSize;
 
-      _innerStartCircleSize = widget.editorProperties.innerCircleSize;
-      _innerEndCircleSize = widget.editorProperties.innerCircleSize;
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
@@ -634,13 +625,15 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                   startPos: _startPos,
                   endPos: _endPos,
                   scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
-                  startCircleSize:
+                  startCircleTime:
                       Duration(milliseconds: _videoStartPos.toInt())
                                   .inSeconds ==
                               0
                           ? 0
-                          : double.parse(Duration(milliseconds: _videoStartPos.toInt())
-                                  .inSeconds.toString()),
+                          : double.parse(
+                              Duration(milliseconds: _videoStartPos.toInt())
+                                  .inSeconds
+                                  .toString()),
                   endCircleSize:
                       Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
                               Duration(milliseconds: _trimmerAreaDuration)
@@ -652,23 +645,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                                   0
                               ? _endCircleSize
                               : _endCircleSize,
-                  innerStartCircleSize:
-                      Duration(milliseconds: _videoStartPos.toInt())
-                                  .inSeconds ==
-                              0
-                          ? 0
-                          : _innerStartCircleSize,
-                  innerEndCircleSize:
-                      Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
-                              Duration(milliseconds: _trimmerAreaDuration)
-                                  .inSeconds
-                                  .toInt()
-                          ? 0
-                          : Duration(milliseconds: _videoStartPos.toInt())
-                                      .inSeconds ==
-                                  0
-                              ? _innerEndCircleSize
-                              : _innerEndCircleSize,
                   borderRadius: _borderRadius,
                   borderWidth: widget.editorProperties.borderWidth,
                   scrubberWidth: widget.editorProperties.scrubberWidth,

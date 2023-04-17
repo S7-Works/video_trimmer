@@ -21,22 +21,12 @@ class TrimEditorPainter extends CustomPainter {
   /// For specifying a size to the start holder
   /// of the video trimmer area.
   /// By default it is set to `0.5`.
-  final double startCircleSize;
-
-  /// For specifying a size to the start holder
-  /// of the video trimmer area.
-  /// By default it is set to `0.5`.
-  final double innerStartCircleSize;
+  final double startCircleTime;
 
   /// For specifying a size to the end holder
   /// of the video trimmer area.
   /// By default it is set to `0.5`.
   final double endCircleSize;
-
-  /// For specifying a size to the end holder
-  /// of the video trimmer area.
-  /// By default it is set to `0.5`.
-  final double innerEndCircleSize;
 
   /// For specifying the width of the border around
   /// the trim area. By default it is set to `3`.
@@ -123,10 +113,8 @@ class TrimEditorPainter extends CustomPainter {
     required this.startPos,
     required this.endPos,
     required this.scrubberAnimationDx,
-    this.startCircleSize = 0.5,
-    this.innerStartCircleSize = 0.3,
+    this.startCircleTime = 0.0,
     this.endCircleSize = 0.5,
-    this.innerEndCircleSize = 0.3,
     this.borderRadius = 4,
     this.borderWidth = 3,
     this.scrubberWidth = 1,
@@ -139,7 +127,7 @@ class TrimEditorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) async {
-    debugPrint("startCircleSize , $startCircleSize");
+    debugPrint("startCircleSize , $startCircleTime");
     // var borderPaint = Paint()
     //   ..color = borderPaintColor
     //   ..strokeWidth = borderWidth
@@ -394,7 +382,7 @@ class TrimEditorPainter extends CustomPainter {
     Paint paint0Fill = Paint()..style = PaintingStyle.fill;
     paint0Fill.color = Colors.black.withOpacity(1.0);
 
-    if (startCircleSize != 0.0) {
+    if (startCircleTime != 0.0) {
       canvas.drawPath(path, paint);
       canvas.drawPath(path_01, paint0Fill);
     }

@@ -463,7 +463,7 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
               startPos: _startPos,
               endPos: _endPos,
               scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
-              startCircleSize: _startCircleSize,
+              startCircleTime: _startCircleSize,
               endCircleSize: _endCircleSize,
               borderRadius: _borderRadius,
               borderWidth: widget.editorProperties.borderWidth,
