@@ -184,8 +184,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
   @override
   void initState() {
     super.initState();
-    _startCircleSize = widget.editorProperties.circleSize;
-    _endCircleSize = widget.editorProperties.circleSize;
     _borderRadius = widget.editorProperties.borderRadius;
     _thumbnailViewerH = widget.viewerHeight;
     log('thumbnailViewerW: $_thumbnailViewerW');
@@ -394,8 +392,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
   /// Drag gesture ended, update UI accordingly.
   void _onDragEnd(DragEndDetails details) {
     setState(() {
-      _startCircleSize = widget.editorProperties.circleSize;
-      _endCircleSize = widget.editorProperties.circleSize;
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
@@ -464,11 +460,10 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
               endPos: _endPos,
               scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
               startCircleTime: _startCircleSize,
-              endCircleSize: _endCircleSize,
+              endCircleTime: _endCircleSize,
               borderRadius: _borderRadius,
               borderWidth: widget.editorProperties.borderWidth,
               scrubberWidth: widget.editorProperties.scrubberWidth,
-              circlePaintColor: widget.editorProperties.circlePaintColor,
               borderPaintColor: widget.editorProperties.borderPaintColor,
               scrubberPaintColor: widget.editorProperties.scrubberPaintColor,
             ),

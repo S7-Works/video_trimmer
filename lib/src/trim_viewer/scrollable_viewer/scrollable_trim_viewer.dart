@@ -169,8 +169,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   double _autoStartScrollPos = 0.0;
   double _autoEndScrollPos = 0.0;
 
-  late double _endCircleSize;
-
   late double _borderRadius;
 
   double? fraction;
@@ -283,7 +281,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _endCircleSize = widget.editorProperties.circleSize;
 
     _borderRadius = widget.editorProperties.borderRadius;
     _thumbnailViewerH = widget.viewerHeight;
@@ -473,7 +470,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     _localPosition = details.localPosition.dx;
 
     if (_dragType == EditorDragType.left) {
-      // _startCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_startPos.dx + details.delta.dx <= _endPos.dx) &&
           !(_endPos.dx - _startPos.dx - details.delta.dx > maxLengthPixels!)) {
@@ -544,8 +540,6 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
     _scrollStartTimer?.cancel();
     _scrollingTimer?.cancel();
     setState(() {
-      _endCircleSize = widget.editorProperties.circleSize;
-
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
@@ -597,9 +591,9 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
 
                         //Add this CustomPaint widget to the Widget Tree
 
-                        !videoPlayerController.value.isPlaying
+                        videoPlayerController.value.isPlaying
                             ? Text(
-                                Duration(milliseconds: _videoEndPos.toInt())
+                                Duration(milliseconds: _currentPosition.toInt())
                                     .format(widget.durationStyle),
                                 style: widget.durationTextStyle,
                               )
@@ -631,23 +625,19 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                               Duration(milliseconds: _videoStartPos.toInt())
                                   .inSeconds
                                   .toString()),
-                  endCircleSize:
+                  endCircleTime:
                       Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
                               Duration(milliseconds: _trimmerAreaDuration)
                                   .inSeconds
                                   .toInt()
                           ? 0
-                          : Duration(milliseconds: _videoStartPos.toInt())
-                                      .inSeconds ==
-                                  0
-                              ? _endCircleSize
-                              : _endCircleSize,
+                          : double.parse(
+                              Duration(milliseconds: _videoEndPos.toInt())
+                                  .inSeconds
+                                  .toString()),
                   borderRadius: _borderRadius,
                   borderWidth: widget.editorProperties.borderWidth,
                   scrubberWidth: widget.editorProperties.scrubberWidth,
-                  circlePaintColor: widget.editorProperties.circlePaintColor,
-                  innerCirclePaintColor:
-                      widget.editorProperties.innerCirclePaintColor,
                   borderPaintColor: widget.editorProperties.borderPaintColor,
                   scrubberPaintColor:
                       widget.editorProperties.scrubberPaintColor,

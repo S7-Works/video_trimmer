@@ -26,7 +26,7 @@ class TrimEditorPainter extends CustomPainter {
   /// For specifying a size to the end holder
   /// of the video trimmer area.
   /// By default it is set to `0.5`.
-  final double endCircleSize;
+  final double endCircleTime;
 
   /// For specifying the width of the border around
   /// the trim area. By default it is set to `3`.
@@ -42,13 +42,6 @@ class TrimEditorPainter extends CustomPainter {
   /// the trim area. By default it is set to `Colors.white`.
   final Color borderPaintColor;
 
-  /// For specifying a color to the circle.
-  /// By default it is set to `Colors.white`
-  final Color circlePaintColor;
-
-  /// For specifying a color to the inner circle.
-  /// By default it is set to `Colors.black`
-  final Color innerCirclePaintColor;
 
   /// For specifying a color to the video
   /// scrubber inside the trim area. By default it is set to
@@ -72,16 +65,7 @@ class TrimEditorPainter extends CustomPainter {
   ///
   /// The optional parameters are:
   ///
-  /// * [startCircleSize] for specifying a size to the start holder
-  /// of the video trimmer area.
-  /// By default it is set to `0.5`.
-  ///
-  ///
-  /// * [endCircleSize] for specifying a size to the end holder
-  /// of the video trimmer area.
-  /// By default it is set to `0.5`.
-  ///
-  ///
+
   /// * [borderRadius] for specifying a circular border radius
   /// to the corners of the trim area.
   /// By default it is set to `4.0`.
@@ -101,8 +85,6 @@ class TrimEditorPainter extends CustomPainter {
   /// the trim area. By default it is set to `Colors.white`.
   ///
   ///
-  /// * [circlePaintColor] for specifying a color to the circle.
-  /// By default it is set to `Colors.white`.
   ///
   ///
   /// * [scrubberPaintColor] for specifying a color to the video
@@ -114,32 +96,19 @@ class TrimEditorPainter extends CustomPainter {
     required this.endPos,
     required this.scrubberAnimationDx,
     this.startCircleTime = 0.0,
-    this.endCircleSize = 0.5,
+    this.endCircleTime = 0.0,
     this.borderRadius = 4,
     this.borderWidth = 3,
     this.scrubberWidth = 1,
     this.showScrubbers = true,
     this.borderPaintColor = Colors.white,
-    this.circlePaintColor = Colors.white,
-    this.innerCirclePaintColor = Colors.black,
     this.scrubberPaintColor = Colors.white,
   });
 
   @override
   void paint(Canvas canvas, Size size) async {
     debugPrint("startCircleSize , $startCircleTime");
-    // var borderPaint = Paint()
-    //   ..color = borderPaintColor
-    //   ..strokeWidth = borderWidth
-    //   ..style = PaintingStyle.stroke
-    //   ..strokeCap = StrokeCap.round;
-
-    // var circlePaint = Paint()
-    //   ..color = circlePaintColor
-    //   ..strokeWidth = 1
-    //   ..style = PaintingStyle.fill
-    //   ..strokeCap = StrokeCap.round;
-
+   
     var scrubberPaint = Paint()
       ..color = scrubberPaintColor
       ..strokeWidth = scrubberWidth
@@ -260,8 +229,7 @@ class TrimEditorPainter extends CustomPainter {
 
     Paint paintBorderBlob = Paint()..style = PaintingStyle.stroke;
 
-    /// TODO: Make trimmer border color dynamic
-    paintBorderBlob.color = Colors.white;
+    paintBorderBlob.color = borderPaintColor;
     paintBorderBlob.strokeWidth = 1;
 
     if (showScrubbers) {
@@ -427,8 +395,6 @@ class TrimEditorPainter extends CustomPainter {
     path1.cubicTo(endPos.dx + 60 - 30, size.height * 0.64, endPos.dx + 60 - 30,
         size.height * 0.64, endPos.dx + 60 - 30, size.height * 0.64);
 
-    canvas.drawPath(path1, paint1);
-
     Path path_02 = Path();
     path_02.moveTo(
       26 * 0.4553658 - 10,
@@ -504,9 +470,11 @@ class TrimEditorPainter extends CustomPainter {
 
     Paint paint2Fill = Paint()..style = PaintingStyle.fill;
     paint2Fill.color = Colors.black.withOpacity(1.0);
-    // TODO hide this when time is highest
 
-    canvas.drawPath(c, paint2Fill);
+    if (endCircleTime != 0.0) {
+      canvas.drawPath(path1, paint1);
+      canvas.drawPath(c, paint2Fill);
+    }
 
     // End of Trimmer Right Button
   }
