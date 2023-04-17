@@ -116,10 +116,10 @@ class RPSCustomPainter extends CustomPainter {
         size.height * 0.00008055420);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.stroke;
-    paint_0_fill.color = Colors.green.withOpacity(1.0);
-    paint_0_fill.strokeWidth = 1.5;
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.stroke;
+    paint0Fill.color = Colors.green.withOpacity(1.0);
+    paint0Fill.strokeWidth = 1.5;
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override

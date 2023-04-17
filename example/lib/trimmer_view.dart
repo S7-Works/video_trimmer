@@ -93,19 +93,16 @@ class _TrimmerViewState extends State<TrimmerView> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TrimViewer(
+                      type: ViewerType.scrollable,
                       trimmer: _trimmer,
                       viewerHeight: 50.0,
                       viewerWidth: MediaQuery.of(context).size.width,
                       durationStyle: DurationStyle.FORMAT_MM_SS,
                       maxVideoLength: const Duration(seconds: 10),
                       editorProperties: const TrimEditorProperties(
-                        borderPaintColor: Colors.transparent,
+                        borderPaintColor: Colors.red,
                         borderWidth: 5,
                         borderRadius: 15,
-                        circlePaintColor: Colors.transparent,
-                        innerCirclePaintColor: Colors.transparent,
-                        circleSize: 0,
-                        innerCircleSize: 0,
                       ),
                       areaProperties: TrimAreaProperties.edgeBlur(
                           thumbnailQuality: 10, borderRadius: 15),

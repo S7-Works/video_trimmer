@@ -155,8 +155,7 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
 
   int _numberOfThumbnails = 0;
 
-  late double _startCircleSize;
-  late double _endCircleSize;
+
   late double _borderRadius;
 
   double? fraction;
@@ -184,8 +183,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
   @override
   void initState() {
     super.initState();
-    _startCircleSize = widget.editorProperties.circleSize;
-    _endCircleSize = widget.editorProperties.circleSize;
     _borderRadius = widget.editorProperties.borderRadius;
     _thumbnailViewerH = widget.viewerHeight;
     log('thumbnailViewerW: $_thumbnailViewerW');
@@ -342,7 +339,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
     if (!_allowDrag) return;
 
     if (_dragType == EditorDragType.left) {
-      _startCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_startPos.dx + details.delta.dx <= _endPos.dx) &&
           !(_endPos.dx - _startPos.dx - details.delta.dx > maxLengthPixels!)) {
@@ -350,8 +346,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
-      _startCircleSize = widget.editorProperties.circleSizeOnDrag;
-      _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_endPos.dx + details.delta.dx <= _thumbnailViewerW)) {
         _startPos += details.delta;
@@ -360,7 +354,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
         _onEndDragged();
       }
     } else {
-      _endCircleSize = widget.editorProperties.circleSizeOnDrag;
       if ((_endPos.dx + details.delta.dx <= _thumbnailViewerW) &&
           (_endPos.dx + details.delta.dx >= _startPos.dx) &&
           !(_endPos.dx - _startPos.dx + details.delta.dx > maxLengthPixels!)) {
@@ -394,8 +387,6 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
   /// Drag gesture ended, update UI accordingly.
   void _onDragEnd(DragEndDetails details) {
     setState(() {
-      _startCircleSize = widget.editorProperties.circleSize;
-      _endCircleSize = widget.editorProperties.circleSize;
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
@@ -463,12 +454,10 @@ class _FixedTrimViewerState extends State<FixedTrimViewer>
               startPos: _startPos,
               endPos: _endPos,
               scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
-              startCircleSize: _startCircleSize,
-              endCircleSize: _endCircleSize,
+              
               borderRadius: _borderRadius,
               borderWidth: widget.editorProperties.borderWidth,
               scrubberWidth: widget.editorProperties.scrubberWidth,
-              circlePaintColor: widget.editorProperties.circlePaintColor,
               borderPaintColor: widget.editorProperties.borderPaintColor,
               scrubberPaintColor: widget.editorProperties.scrubberPaintColor,
             ),
