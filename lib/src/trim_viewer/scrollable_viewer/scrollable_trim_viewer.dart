@@ -639,7 +639,8 @@ class _ScrollableTrimViewerState extends State<ScrollableTrimViewer>
                                   .inSeconds ==
                               0
                           ? 0
-                          : _startCircleSize,
+                          : double.parse(Duration(milliseconds: _videoStartPos.toInt())
+                                  .inSeconds.toString()),
                   endCircleSize:
                       Duration(milliseconds: _videoEndPos.toInt()).inSeconds ==
                               Duration(milliseconds: _trimmerAreaDuration)

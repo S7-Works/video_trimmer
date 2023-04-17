@@ -139,17 +139,18 @@ class TrimEditorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) async {
-    var borderPaint = Paint()
-      ..color = borderPaintColor
-      ..strokeWidth = borderWidth
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round;
+    debugPrint("startCircleSize , $startCircleSize");
+    // var borderPaint = Paint()
+    //   ..color = borderPaintColor
+    //   ..strokeWidth = borderWidth
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeCap = StrokeCap.round;
 
-    var circlePaint = Paint()
-      ..color = circlePaintColor
-      ..strokeWidth = 1
-      ..style = PaintingStyle.fill
-      ..strokeCap = StrokeCap.round;
+    // var circlePaint = Paint()
+    //   ..color = circlePaintColor
+    //   ..strokeWidth = 1
+    //   ..style = PaintingStyle.fill
+    //   ..strokeCap = StrokeCap.round;
 
     var scrubberPaint = Paint()
       ..color = scrubberPaintColor
@@ -284,83 +285,16 @@ class TrimEditorPainter extends CustomPainter {
         );
       }
     }
-    Paint innerCircle = Paint()
-      ..color = innerCirclePaintColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..style = PaintingStyle.fill;
 
     canvas.drawPath(
       path_0,
       paintBorderBlob,
     );
-    // Paint start holder
-    canvas.drawCircle(
-      startPos + Offset(0, endPos.dy / 2),
-      startCircleSize,
-      circlePaint,
-    );
-    canvas.drawCircle(
-      startPos + Offset(0, endPos.dy / 2),
-      innerStartCircleSize,
-      innerCircle,
-    );
 
-    // Paint end holder
-    canvas.drawCircle(
-      endPos + Offset(0, -endPos.dy / 2),
-      endCircleSize,
-      circlePaint,
-    );
-
-    canvas.drawCircle(
-      endPos + Offset(0, -endPos.dy / 2),
-      innerEndCircleSize,
-      innerCircle,
-    );
-
-    Paint paint1 = Paint();
-    Path path1 = Path();
-
-    paint1.color = const Color(0xffC7FFBC);
-    path1 = Path();
-    path1.lineTo(
-      endPos.dx + 60 - 30,
-      size.height * 0.64,
-    );
-    path1.cubicTo(
-      endPos.dx + 60 - 30,
-      size.height * 0.85,
-      endPos.dx + 60 * 0.8 - 30,
-      size.height,
-      endPos.dx + 60 * 0.56 - 30,
-      size.height,
-    );
-
-    path1.cubicTo(
-      endPos.dx + -0.21 - 30,
-      size.height,
-      endPos.dx + -0.16 - 30,
-      0,
-      endPos.dx + 60 * 0.56 - 30,
-      0,
-    );
-
-    path1.cubicTo(endPos.dx + 60 * 0.79 - 30, 0, endPos.dx + 60 - 30,
-        size.height * 0.13, endPos.dx + 60 - 30, size.height * 0.34);
-
-    path1.cubicTo(endPos.dx + 60 - 30, size.height * 0.34, endPos.dx + 60 - 30,
-        size.height * 0.64, endPos.dx + 60 - 30, size.height * 0.64);
-
-    path1.cubicTo(endPos.dx + 60 - 30, size.height * 0.64, endPos.dx + 60 - 30,
-        size.height * 0.64, endPos.dx + 60 - 30, size.height * 0.64);
-
-    canvas.drawPath(path1, paint1);
+    // Trimmer Left Button
 
     Paint paint = Paint();
     Path path = Path();
-
-    // Path number 1
 
     paint.color = const Color(0xffC7FFBC);
     path = Path();
@@ -408,7 +342,6 @@ class TrimEditorPainter extends CustomPainter {
       startPos.dx + 0 - 30,
       startPos.dy + size.height * 0.38,
     );
-    canvas.drawPath(path, paint);
 
     Path path_01 = Path();
     path_01.moveTo(
@@ -458,9 +391,55 @@ class TrimEditorPainter extends CustomPainter {
     );
     path_01.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Colors.black.withOpacity(1.0);
-    canvas.drawPath(path_01, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Colors.black.withOpacity(1.0);
+
+    if (startCircleSize != 0.0) {
+      canvas.drawPath(path, paint);
+      canvas.drawPath(path_01, paint0Fill);
+    }
+
+    // End of Trimmer left Button
+
+// Trimmer Right Button
+
+    Paint paint1 = Paint();
+    Path path1 = Path();
+
+    paint1.color = const Color(0xffC7FFBC);
+    path1 = Path();
+    path1.lineTo(
+      endPos.dx + 60 - 30,
+      size.height * 0.64,
+    );
+    path1.cubicTo(
+      endPos.dx + 60 - 30,
+      size.height * 0.85,
+      endPos.dx + 60 * 0.8 - 30,
+      size.height,
+      endPos.dx + 60 * 0.56 - 30,
+      size.height,
+    );
+
+    path1.cubicTo(
+      endPos.dx + -0.21 - 30,
+      size.height,
+      endPos.dx + -0.16 - 30,
+      0,
+      endPos.dx + 60 * 0.56 - 30,
+      0,
+    );
+
+    path1.cubicTo(endPos.dx + 60 * 0.79 - 30, 0, endPos.dx + 60 - 30,
+        size.height * 0.13, endPos.dx + 60 - 30, size.height * 0.34);
+
+    path1.cubicTo(endPos.dx + 60 - 30, size.height * 0.34, endPos.dx + 60 - 30,
+        size.height * 0.64, endPos.dx + 60 - 30, size.height * 0.64);
+
+    path1.cubicTo(endPos.dx + 60 - 30, size.height * 0.64, endPos.dx + 60 - 30,
+        size.height * 0.64, endPos.dx + 60 - 30, size.height * 0.64);
+
+    canvas.drawPath(path1, paint1);
 
     Path path_02 = Path();
     path_02.moveTo(
@@ -537,7 +516,11 @@ class TrimEditorPainter extends CustomPainter {
 
     Paint paint_2_fill = Paint()..style = PaintingStyle.fill;
     paint_2_fill.color = Colors.black.withOpacity(1.0);
+    // TODO hide this when time is highest
+
     canvas.drawPath(c, paint_2_fill);
+
+    // End of Trimmer Right Button
   }
 
   @override

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:example/trimmer_view.dart';
 import 'package:file_picker/file_picker.dart';
-
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -24,6 +23,7 @@ class HomePage extends StatelessWidget {
             );
             if (result != null) {
               File file = File(result.files.single.path!);
+              // ignore: use_build_context_synchronously
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
                   return TrimmerView(file);
